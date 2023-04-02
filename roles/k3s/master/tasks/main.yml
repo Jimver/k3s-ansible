@@ -13,6 +13,16 @@
   args:
     warn: false  # The ansible systemd module does not support reset-failed
 
+- name: Ensure auto-deploying manifests are downloaded to the primary controller
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "/var/lib/rancher/k3s/server/manifests/{{ item.filename | default(item.url | basename) }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop: "{{ k3s_server_manifests_urls }}"
+  when: ansible_hostname == hostvars[groups['master'][0]]['ansible_hostname']
+
 - name: Deploy vip manifest
   include_tasks: vip.yml
 

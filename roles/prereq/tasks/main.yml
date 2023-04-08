@@ -63,3 +63,11 @@
     path: /etc/sudoers
     validate: 'visudo -cf %s'
   when: ansible_os_family == "RedHat"
+
+- name: Install nfs client packages
+  when: ansible_os_family == "Debian"
+  apt:
+    name: 
+    - nfs-common
+    - nfs4-acl-tools
+    state: present

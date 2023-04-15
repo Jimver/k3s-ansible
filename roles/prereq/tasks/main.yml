@@ -71,3 +71,19 @@
     - nfs-common
     - nfs4-acl-tools
     state: present
+
+- name: Create custom k3s-resolv.conf
+  template:
+    src: "k3s-resolv.conf.j2"
+    dest: "/etc/k3s-resolv.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create custom k3s config
+  template:
+    src: "config.yaml.j2"
+    dest: "/etc/rancher/k3s/config.yaml"
+    owner: root
+    group: root
+    mode: 0644
